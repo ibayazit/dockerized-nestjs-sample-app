@@ -1,0 +1,51 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider      = "prisma-client-js"
+  output        = "../node_modules/@prisma/client-main"
+  binaryTargets = ["native", "linux-musl-arm64-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+enum Languages {
+  TR
+  EN
+  RU
+  DE
+}
+
+enum Countries {
+  TR
+  EN
+  RU
+  DE
+}
+
+model Author {
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt()
+  name      String
+  country   Countries
+  birthDate DateTime
+  Book      Book[]
+}
+
+model Book {
+  id           String    @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt()
+  title        String
+  author       Author    @relation(fields: [authorId], references: [id])
+  authorId     String    @db.ObjectId
+  price        Int
+  ISBN         String
+  language     Languages
+  numberOfPage Int
+  publisher    String
+}

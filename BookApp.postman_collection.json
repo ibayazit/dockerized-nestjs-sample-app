@@ -1,0 +1,281 @@
+{
+	"info": {
+		"_postman_id": "66a6fa34-ddf9-479f-b118-81059862f09f",
+		"name": "BookApp",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "11313882"
+	},
+	"item": [
+		{
+			"name": "system",
+			"item": [
+				{
+					"name": "check health",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/health",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"health"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "author",
+			"item": [
+				{
+					"name": "getAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/author",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"author"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/author/65b1524b6a3c34d1ddee8f71",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"author",
+								"65b1524b6a3c34d1ddee8f71"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/author/65b14e59a1785f071c39b084",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"author",
+								"65b14e59a1785f071c39b084"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"George Orwell\",\n    \"birthDate\": \"1950-01-21\",\n    \"country\": \"EN\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/author",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"author"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"George Orwell Updated\",\n    \"birthDate\": \"1950-01-21\",\n    \"country\": \"EN\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/author/65b1524b6a3c34d1ddee8f71",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"author",
+								"65b1524b6a3c34d1ddee8f71"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "book",
+			"item": [
+				{
+					"name": "getAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/book",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"book"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/book/65b245d6cb5d78fe61670a73",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"book",
+								"65b245d6cb5d78fe61670a73"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/book/65b245d6cb5d78fe61670a73",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"book",
+								"65b245d6cb5d78fe61670a73"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"1984\",\n    \"authorId\": \"65b1524b6a3c34d1ddee8f71\",\n    \"price\": 50,\n    \"ISBN\": \"9786555522655\",\n    \"language\": \"EN\",\n    \"numberOfPage\": 328,\n    \"publisher\": \"Some Publisher\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/book",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"book"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"1984 updated\",\n    \"authorId\": \"65b1524b6a3c34d1ddee8f71\",\n    \"price\": 50,\n    \"ISBN\": \"9786555522655\",\n    \"language\": \"EN\",\n    \"numberOfPage\": 328,\n    \"publisher\": \"Some Publisher\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/book/65b245d6cb5d78fe61670a73",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"book",
+								"65b245d6cb5d78fe61670a73"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "url",
+			"value": "http://localhost:8080/api",
+			"type": "string"
+		}
+	]
+}

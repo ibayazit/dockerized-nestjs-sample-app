@@ -1,0 +1,156 @@
+services:
+  main:
+    container_name: main
+    build:
+      context: .
+      dockerfile: ./.docker/main/.dev.Dockerfile
+      target: development
+    command: npm run start:dev
+    env_file:
+      - .env
+      - .env.development
+    depends_on:
+      - mongo1
+    volumes:
+      - .:/usr/src/app
+    ports:
+      - 8080:8080
+    networks:
+      - bookapp-net
+
+  mongo-express:
+    image: mongo-express:1.0.2-20-alpine3.19
+    container_name: mongo-express
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_SERVER: mongo1
+      ME_CONFIG_BASICAUTH_USERNAME: ${MONGO_USERNAME}
+      ME_CONFIG_BASICAUTH_PASSWORD: ${MONGO_PASSWORD}
+      ME_CONFIG_MONGODB_PORT: 27017
+      ME_CONFIG_MONGODB_ADMINUSERNAME: ${MONGO_USERNAME}
+      ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGO_PASSWORD}
+    networks:
+      - bookapp-net
+
+  mongo1:
+    container_name: mongo1
+    image: 'mongo:6.0.13-jammy'
+    platform: linux/arm64
+    command:
+      [
+        '--replSet',
+        'rs0',
+        '--bind_ip_all',
+        '--port',
+        '27017',
+        '--keyFile',
+        '/data/keyfile',
+      ]
+    ports:
+      - 27017:27017
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
+    healthcheck:
+      test: echo "try { rs.status() } catch (err) { rs.initiate({_id:'rs0',members:[{_id:0,host:'host.docker.internal:27017',priority:4},{_id:1,host:'host.docker.internal:27018',priority:2},{_id:2,host:'host.docker.internal:27019',priority:1}]}) }" | mongosh -u root -p 12345678 --port 27017 --quiet
+      interval: 5s
+      timeout: 30s
+      start_period: 0s
+      start_interval: 1s
+      retries: 30
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+      MONGO_INITDB_DATABASE: ${MONGO_DATABASE}
+      MONGO_REPLICA_SET_NAME: rs0
+      INIT_WAIT_SEC: 10
+    volumes:
+      - mongodb-data-1:/data/db
+      - mongodb-config-1:/data/configdb
+      - mongodb-log-1:/var/log/mongodb
+      - ./.docker/mongo/keyfile:/data/keyfile
+    networks:
+      - bookapp-net
+
+  mongo2:
+    container_name: mongo2
+    image: 'mongo:6.0.13-jammy'
+    platform: linux/arm64
+    command:
+      [
+        '--replSet',
+        'rs0',
+        '--bind_ip_all',
+        '--port',
+        '27018',
+        '--keyFile',
+        '/data/keyfile',
+      ]
+    ports:
+      - 27018:27018
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+      MONGO_INITDB_DATABASE: ${MONGO_DATABASE}
+      MONGO_REPLICA_SET_NAME: rs0
+      INIT_WAIT_SEC: 10
+    volumes:
+      - mongodb-data-2:/data/db
+      - mongodb-config-2:/data/configdb
+      - mongodb-log-2:/var/log/mongodb
+      - ./.docker/mongo/keyfile:/data/keyfile
+    networks:
+      - bookapp-net
+
+  mongo3:
+    container_name: mongo3
+    image: 'mongo:6.0.13-jammy'
+    platform: linux/arm64
+    command:
+      [
+        '--replSet',
+        'rs0',
+        '--bind_ip_all',
+        '--port',
+        '27019',
+        '--keyFile',
+        '/data/keyfile',
+      ]
+    ports:
+      - 27019:27019
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+      MONGO_INITDB_DATABASE: ${MONGO_DATABASE}
+      MONGO_REPLICA_SET_NAME: rs0
+      INIT_WAIT_SEC: 10
+    volumes:
+      - mongodb-data-3:/data/db
+      - mongodb-config-3:/data/configdb
+      - mongodb-log-3:/var/log/mongodb
+      - ./.docker/mongo/keyfile:/data/keyfile
+    networks:
+      - bookapp-net
+
+volumes:
+  mongodb-data-1:
+  mongodb-config-1:
+  mongodb-log-1:
+  mongodb-data-2:
+  mongodb-config-2:
+  mongodb-log-2:
+  mongodb-data-3:
+  mongodb-config-3:
+  mongodb-log-3:
+  grafana-storage:
+
+networks:
+  bookapp-net:
+    name: bookapp-net
+    driver_opts:
+      host.docker.internal: '127.0.0.1'
+    driver: bridge
